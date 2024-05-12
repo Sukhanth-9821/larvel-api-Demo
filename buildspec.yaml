@@ -20,13 +20,13 @@ phases:
       - cp .env.prod .env
       -  docker build -t $IMAGE .
       - docker images
-      - docker tag $IMAGE:$IMAGET_TAG $REPOSITORY/$IMAGE:$IMAGE_TAG
+      - docker tag $IMAGE:$IMAGET_TAG $REPOSITORY/$IMAGE:$IMAGET_TAG
     finally:
       - echo "Building Docker Image Succeded"
   post_build:
     on-failure: ABORT
     commands:
       - docker images
-      -  docker push $REPOSITORY/$IMAGE:$IMAGE_TAG
+      -  docker push $REPOSITORY/$IMAGE:$IMAGET_TAG
     finally:
       - echo "Pushing Docker Image Succeded"
