@@ -19,6 +19,7 @@ phases:
     commands:
       - cp .env.prod .env
       -  docker build -t $IMAGE .
+      - docker images
       - docker tag $IMAGE:$IMAGET_TAG $REPOSITORY/$IMAGE:$IMAGE_TAG
     finally:
       - echo "Building Docker Image Succeded"
