@@ -1,0 +1,30 @@
+version: 0.2   
+phases:
+  install:
+    on-failure: ABORT
+    runtime-versions:
+      php: 8.2
+    finally:
+      - echo "Run Time Version Set Complete"
+  pre_build:
+    on-failure: ABORT
+    commands:
+    #  - echo "Installing DOcker"
+    #  - sudo yum install docker -y
+     - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $REPOSITORY
+    finally:
+      -  echo "Logining in to ECR Completed"
+  build:
+    on-failure: ABORT
+    commands:
+      -  docker build -t $IMAGE .
+      - docker tag prod-larvel-api-baseimage:latest $REPOSITORY/$IMAGE:$IMAGE_TAG
+    finally:
+      - echo "Building Docker Image Succeded"
+  post_build:
+    on-failure: ABORT
+    commands:
+      - docker images
+      -  docker push $REPOSITORY/$IMAGE:$IMAGE_TAG
+    finally:
+      - echo "Pushing Docker Image Succeded"
